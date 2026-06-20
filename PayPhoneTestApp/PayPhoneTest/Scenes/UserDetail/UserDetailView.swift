@@ -85,6 +85,8 @@ struct UserDetailView: View {
                 detailValue(user.address.suite)
                 detailValue(user.address.city)
                 detailValue(user.address.zipcode)
+                detailValue("\(getTranslation(key: "Latitude")): \(user.address.geo.lat)")
+                detailValue("\(getTranslation(key: "Longitude")): \(user.address.geo.lng)")
             }
 
             if let errorMessage = viewModel.errorMessage {

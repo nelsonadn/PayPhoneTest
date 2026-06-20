@@ -6,6 +6,7 @@
 //  Copyright © 2026 Nelson Cruz Mora. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 
 struct UserCreateView: View {
@@ -18,6 +19,10 @@ struct UserCreateView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Field?
     @StateObject private var viewModel = UserCreateViewModel()
+    @StateObject private var locationService = LocationService()
+    @State private var showLocationAlert = false
+    @State private var locationAlertMessage = ""
+    @State private var isLocationRequestActive = false
 
     var body: some View {
         Form {
@@ -45,6 +50,36 @@ struct UserCreateView: View {
                     .onChange(of: viewModel.phone) { newValue in
                         viewModel.phone = String(newValue.prefix(ValidationRules.phoneMaxLength))
                     }
+
+                HStack(spacing: 12) {
+                    TextField(getTranslation(key: "Latitude"), text: $viewModel.latitude)
+                        .keyboardType(.decimalPad)
+                        .onChange(of: viewModel.latitude) { newValue in
+                            viewModel.latitude = String(newValue.prefix(20))
+                        }
+
+                    TextField(getTranslation(key: "Longitude"), text: $viewModel.longitude)
+                        .keyboardType(.decimalPad)
+                        .onChange(of: viewModel.longitude) { newValue in
+                            viewModel.longitude = String(newValue.prefix(20))
+                        }
+                }
+            }
+
+            Section {
+                Button {
+                    isLocationRequestActive = true
+                    showLocationAlert = false
+                    locationAlertMessage = ""
+                    locationService.alertMessage = nil
+                    locationService.requestCurrentLocation()
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text(getTranslation(key: "Get Location"))
+                        Spacer()
+                    }
+                }
             }
 
             if let errorMessage = viewModel.errorMessage {
@@ -72,10 +107,43 @@ struct UserCreateView: View {
             }
         }
         .navigationTitle(getTranslation(key: "User Create"))
-        .contentShape(Rectangle())
-        .onTapGesture {
-            guard focusedField != nil else { return }
-            focusedField = nil
+        .onAppear {
+            viewModel.latitude = ""
+            viewModel.longitude = ""
+            locationService.alertMessage = nil
+            locationService.latitude = ""
+            locationService.longitude = ""
+            showLocationAlert = false
+            locationAlertMessage = ""
+            isLocationRequestActive = false
+        }
+        .onReceive(locationService.$latitude) { latitude in
+            guard isLocationRequestActive else { return }
+            viewModel.latitude = latitude
+            guard !latitude.isEmpty, !viewModel.longitude.isEmpty else { return }
+            locationAlertMessage = "\(getTranslation(key: "Latitude")): \(latitude)\n\(getTranslation(key: "Longitude")): \(viewModel.longitude)"
+            showLocationAlert = true
+            isLocationRequestActive = false
+        }
+        .onReceive(locationService.$longitude) { longitude in
+            guard isLocationRequestActive else { return }
+            viewModel.longitude = longitude
+            guard !viewModel.latitude.isEmpty, !longitude.isEmpty else { return }
+            locationAlertMessage = "\(getTranslation(key: "Latitude")): \(viewModel.latitude)\n\(getTranslation(key: "Longitude")): \(longitude)"
+            showLocationAlert = true
+            isLocationRequestActive = false
+        }
+        .onReceive(locationService.$alertMessage) { message in
+            guard let message else { return }
+            guard isLocationRequestActive else { return }
+            locationAlertMessage = getTranslation(key: message)
+            showLocationAlert = true
+            isLocationRequestActive = false
+        }
+        .alert(getTranslation(key: "Location"), isPresented: $showLocationAlert) {
+            Button(getTranslation(key: "OK"), role: .cancel) {}
+        } message: {
+            Text(locationAlertMessage)
         }
     }
 }

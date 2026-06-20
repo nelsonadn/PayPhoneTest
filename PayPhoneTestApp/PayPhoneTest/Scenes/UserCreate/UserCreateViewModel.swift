@@ -7,6 +7,7 @@
 //
 
 import Combine
+import CoreLocation
 import Foundation
 
 @MainActor
@@ -14,13 +15,15 @@ final class UserCreateViewModel: ObservableObject {
     @Published var name = ""
     @Published var email = ""
     @Published var phone = ""
+    @Published var latitude = ""
+    @Published var longitude = ""
     @Published var errorMessage: String?
     @Published var isSaving = false
 
     private let storageService: StorageServicing
 
-    init(storageService: StorageServicing = StorageService()) {
-        self.storageService = storageService
+    init(storageService: StorageServicing? = nil) {
+        self.storageService = storageService ?? StorageService()
     }
 
     func saveUser() async -> Bool {
@@ -40,7 +43,7 @@ final class UserCreateViewModel: ObservableObject {
                 suite: "",
                 city: "",
                 zipcode: "",
-                geo: GeoDTO(lat: "", lng: "")
+                geo: GeoDTO(lat: latitude.trimmingCharacters(in: .whitespacesAndNewlines), lng: longitude.trimmingCharacters(in: .whitespacesAndNewlines))
             ),
             phone: phone.trimmingCharacters(in: .whitespacesAndNewlines),
             website: "",

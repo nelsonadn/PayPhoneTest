@@ -20,9 +20,9 @@ final class UserDetailViewModel: ObservableObject {
     let user: UserDTO
     private let storageService: StorageServicing
 
-    init(user: UserDTO, storageService: StorageServicing = StorageService()) {
+    init(user: UserDTO, storageService: StorageServicing? = nil) {
         self.user = user
-        self.storageService = storageService
+        self.storageService = storageService ?? StorageService()
         self.name = user.name
         self.email = user.email
     }
