@@ -50,9 +50,22 @@
 		4BBDBBD72FE715840097552C /* PayPhoneTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PayPhoneTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4B5254722FE7248E005B9911 /* Exceptions for "PayPhoneTest" folder in "PayPhoneTest" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4BBDBBBF2FE715810097552C /* PayPhoneTest */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4BBDBBC22FE715810097552C /* PayPhoneTest */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4B5254722FE7248E005B9911 /* Exceptions for "PayPhoneTest" folder in "PayPhoneTest" target */,
+			);
 			path = PayPhoneTest;
 			sourceTree = "<group>";
 		};
@@ -453,6 +466,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PayPhoneTest/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PayPhoneList;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -500,6 +514,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PayPhoneTest/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PayPhoneList;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;

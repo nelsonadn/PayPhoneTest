@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UserDTO: Codable, Identifiable, Hashable {
+struct UserDTO: Codable, Identifiable, Hashable, Sendable {
     let id: Int
     let name: String
     let username: String
@@ -19,7 +19,7 @@ struct UserDTO: Codable, Identifiable, Hashable {
     let company: CompanyDTO
 }
 
-struct AddressDTO: Codable, Hashable {
+struct AddressDTO: Codable, Hashable, Sendable {
     let street: String
     let suite: String
     let city: String
@@ -27,12 +27,12 @@ struct AddressDTO: Codable, Hashable {
     let geo: GeoDTO
 }
 
-struct GeoDTO: Codable, Hashable {
+struct GeoDTO: Codable, Hashable, Sendable {
     let lat: String
     let lng: String
 }
 
-struct CompanyDTO: Codable, Hashable {
+struct CompanyDTO: Codable, Hashable, Sendable {
     let name: String
     let catchPhrase: String
     let bs: String

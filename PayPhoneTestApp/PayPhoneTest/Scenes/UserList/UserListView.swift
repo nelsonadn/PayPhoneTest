@@ -9,7 +9,12 @@
 import SwiftUI
 
 struct UserListView: View {
+    @StateObject private var viewModel = UserListViewModel()
+
     var body: some View {
         Text(getTranslation(key: "User List"))
+            .task {
+                await viewModel.loadUsers()
+            }
     }
 }
