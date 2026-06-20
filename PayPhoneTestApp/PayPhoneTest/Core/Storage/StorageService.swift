@@ -50,7 +50,7 @@ final class StorageService: StorageServicing {
         }
 
         let realm = try Realm()
-        guard realm.objects(UserRecord.self).first(where: { normalizedEmail($0.email) == email }) == nil else {
+        guard realm.objects(UserRecord.self).first(where: { [self] in self.normalizedEmail($0.email) == email }) == nil else {
             print(":: StorageService User already exists: \(user.email)")
             return
         }
@@ -65,10 +65,10 @@ final class StorageService: StorageServicing {
 
     func saveNewUsers(_ users: [UserDTO]) throws {
         let realm = try Realm()
-        let existingEmails = Set(realm.objects(UserRecord.self).map { normalizedEmail($0.email) })
+        let existingEmails = Set(realm.objects(UserRecord.self).map { [self] in self.normalizedEmail($0.email) })
         let deletedEmails = DeletedUsersStore.loadEmails()
-        let newUsers = users.filter {
-            let email = normalizedEmail($0.email)
+        let newUsers = users.filter { [self] in
+            let email = self.normalizedEmail($0.email)
             return !existingEmails.contains(email) && !deletedEmails.contains(email)
         }
 
@@ -106,12 +106,12 @@ final class StorageService: StorageServicing {
         let realm = try Realm()
         let normalizedOriginal = normalizedEmail(originalEmail)
         let normalizedNew = normalizedEmail(user.email)
-        guard let record = realm.objects(UserRecord.self).first(where: { normalizedEmail($0.email) == normalizedOriginal }) else {
+        guard let record = realm.objects(UserRecord.self).first(where: { [self] in self.normalizedEmail($0.email) == normalizedOriginal }) else {
             print(":: StorageService User not found for update: \(originalEmail)")
             throw StorageError.userNotFound
         }
 
-        let emailExists = realm.objects(UserRecord.self).first(where: { normalizedEmail($0.email) == normalizedNew && normalizedEmail($0.email) != normalizedOriginal }) != nil
+        let emailExists = realm.objects(UserRecord.self).first(where: { [self] in self.normalizedEmail($0.email) == normalizedNew && self.normalizedEmail($0.email) != normalizedOriginal }) != nil
         guard !emailExists else {
             print(":: StorageService Email already exists: \(user.email)")
             throw StorageError.duplicateEmail
