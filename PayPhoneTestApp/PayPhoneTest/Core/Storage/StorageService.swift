@@ -9,6 +9,10 @@
 import Foundation
 import RealmSwift
 
+extension Notification.Name {
+    static let userStorageDidChange = Notification.Name("userStorageDidChange")
+}
+
 protocol StorageServicing {
     func saveNewUser(_ user: UserDTO) throws
     func saveNewUsers(_ users: [UserDTO]) throws
@@ -31,6 +35,7 @@ final class StorageService: StorageServicing {
         }
 
         print(":: StorageService Saved user: \(user.email)")
+        NotificationCenter.default.post(name: .userStorageDidChange, object: nil)
     }
 
     func saveNewUsers(_ users: [UserDTO]) throws {
@@ -48,6 +53,7 @@ final class StorageService: StorageServicing {
         }
 
         print(":: StorageService Saved \(newUsers.count) new users")
+        NotificationCenter.default.post(name: .userStorageDidChange, object: nil)
     }
 
     func deleteUser(email: String) throws {
@@ -62,6 +68,7 @@ final class StorageService: StorageServicing {
         }
 
         print(":: StorageService Deleted user: \(email)")
+        NotificationCenter.default.post(name: .userStorageDidChange, object: nil)
     }
 
     func loadUsers() throws -> [UserDTO] {

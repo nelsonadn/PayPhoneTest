@@ -18,6 +18,7 @@ final class UserListViewModel: ObservableObject {
     private let networkService: NetworkService
     private let storageService: StorageServicing
     private var didLoadOnce = false
+    private var notificationObserver: NSObjectProtocol?
 
     init(
         networkService: NetworkService,
@@ -25,12 +26,41 @@ final class UserListViewModel: ObservableObject {
     ) {
         self.networkService = networkService
         self.storageService = storageService
+        notificationObserver = NotificationCenter.default.addObserver(
+            forName: .userStorageDidChange,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in
+                self?.reloadStoredUsers()
+            }
+        }
     }
 
+    deinit {
+        if let notificationObserver {
+            NotificationCenter.default.removeObserver(notificationObserver)
+        }
+    }
 
+    func refreshUsers() async {
+        await loadUsers()
+    }
+
+    func reloadStoredUsers() {
+        do {
+            users = try storageService.loadUsers()
+        } catch {
+            errorMessage = error.localizedDescription
+            print(":: UserListViewModel Error: \(error.localizedDescription)")
+        }
+    }
 
     func loadUsers() async {
-        guard !didLoadOnce else { return }
+        guard !didLoadOnce else {
+            reloadStoredUsers()
+            return
+        }
         didLoadOnce = true
         isLoading = true
         errorMessage = nil
