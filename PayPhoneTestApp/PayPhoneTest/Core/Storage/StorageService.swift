@@ -17,9 +17,7 @@ protocol StorageServicing {
 }
 
 final class StorageService: StorageServicing {
-    static let shared = StorageService()
-
-    private init() {}
+    init() {}
 
     func saveNewUser(_ user: UserDTO) throws {
         let realm = try Realm()

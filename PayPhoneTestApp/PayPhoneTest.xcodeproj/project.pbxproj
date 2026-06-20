@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4BBDBDEB2FE71B320097552C /* (null) in CopyFiles */ = {isa = PBXBuildFile; };
-		4BBDBE1C2FE71B560097552C /* Realm in CopyFiles */ = {isa = PBXBuildFile; productRef = 4BBDBE1A2FE71B560097552C /* Realm */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		4BBDBE1F2FE71BBF0097552C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 4BBDBE1E2FE71BBF0097552C /* Realm */; };
+		4B313BCD2FE7359A00435E50 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 4B52557A2FE72CBF005B9911 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		4B52557B2FE72CBF005B9911 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4B52557A2FE72CBF005B9911 /* RealmSwift */; };
 		4BBDBE222FE71BF50097552C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4BBDBE212FE71BF50097552C /* Alamofire */; };
 /* End PBXBuildFile section */
 
@@ -31,15 +30,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4BBDBBFA2FE71A000097552C /* CopyFiles */ = {
+		4B313BCE2FE7359A00435E50 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4BBDBE1C2FE71B560097552C /* Realm in CopyFiles */,
-				4BBDBDEB2FE71B320097552C /* (null) in CopyFiles */,
+				4B313BCD2FE7359A00435E50 /* RealmSwift in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -96,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BBDBE1F2FE71BBF0097552C /* Realm in Frameworks */,
+				4B52557B2FE72CBF005B9911 /* RealmSwift in Frameworks */,
 				4BBDBE222FE71BF50097552C /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -157,8 +156,8 @@
 			buildPhases = (
 				4BBDBBBC2FE715810097552C /* Sources */,
 				4BBDBBBD2FE715810097552C /* Frameworks */,
-				4BBDBBFA2FE71A000097552C /* CopyFiles */,
 				4BBDBBBE2FE715810097552C /* Resources */,
+				4B313BCE2FE7359A00435E50 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -171,8 +170,8 @@
 			);
 			name = PayPhoneTest;
 			packageProductDependencies = (
-				4BBDBE1E2FE71BBF0097552C /* Realm */,
 				4BBDBE212FE71BF50097552C /* Alamofire */,
+				4B52557A2FE72CBF005B9911 /* RealmSwift */,
 			);
 			productName = PayPhoneTest;
 			productReference = 4BBDBBC02FE715810097552C /* PayPhoneTest.app */;
@@ -258,8 +257,8 @@
 			mainGroup = 4BBDBBB72FE715810097552C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				4BBDBE1D2FE71BBF0097552C /* XCRemoteSwiftPackageReference "realm-swift" */,
 				4BBDBE202FE71BF50097552C /* XCRemoteSwiftPackageReference "Alamofire" */,
+				4B5255792FE72CBF005B9911 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4BBDBBC12FE715810097552C /* Products */;
@@ -462,6 +461,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7X6NV55FC5;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -510,6 +510,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7X6NV55FC5;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -693,15 +694,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4BBDBBF72FE717620097552C /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift";
-			requirement = {
-				branch = community;
-				kind = branch;
-			};
-		};
-		4BBDBE1D2FE71BBF0097552C /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+		4B5255792FE72CBF005B9911 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift";
 			requirement = {
@@ -720,15 +713,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4BBDBE1A2FE71B560097552C /* Realm */ = {
+		4B52557A2FE72CBF005B9911 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4BBDBBF72FE717620097552C /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = Realm;
-		};
-		4BBDBE1E2FE71BBF0097552C /* Realm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4BBDBE1D2FE71BBF0097552C /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = Realm;
+			package = 4B5255792FE72CBF005B9911 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 		4BBDBE212FE71BF50097552C /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

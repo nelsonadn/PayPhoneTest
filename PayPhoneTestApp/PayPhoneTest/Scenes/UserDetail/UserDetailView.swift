@@ -11,5 +11,6 @@ import SwiftUI
 struct UserDetailView: View {
     var body: some View {
         Text(getTranslation(key: "User Detail"))
+            .navigationTitle(getTranslation(key: "User Detail"))
     }
 }
