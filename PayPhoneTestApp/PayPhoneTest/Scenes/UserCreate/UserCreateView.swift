@@ -9,13 +9,21 @@
 import SwiftUI
 
 struct UserCreateView: View {
+    enum Field {
+        case name
+        case email
+        case phone
+    }
+
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var focusedField: Field?
     @StateObject private var viewModel = UserCreateViewModel()
 
     var body: some View {
         Form {
             Section(header: Text(getTranslation(key: "User Data"))) {
                 TextField(getTranslation(key: "Name"), text: $viewModel.name)
+                    .focused($focusedField, equals: .name)
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
                     .onChange(of: viewModel.name) { newValue in
@@ -23,6 +31,7 @@ struct UserCreateView: View {
                     }
 
                 TextField(getTranslation(key: "Email"), text: $viewModel.email)
+                    .focused($focusedField, equals: .email)
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -31,6 +40,7 @@ struct UserCreateView: View {
                     }
 
                 TextField(getTranslation(key: "Phone"), text: $viewModel.phone)
+                    .focused($focusedField, equals: .phone)
                     .keyboardType(.phonePad)
                     .onChange(of: viewModel.phone) { newValue in
                         viewModel.phone = String(newValue.prefix(ValidationRules.phoneMaxLength))
@@ -62,5 +72,10 @@ struct UserCreateView: View {
             }
         }
         .navigationTitle(getTranslation(key: "User Create"))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            guard focusedField != nil else { return }
+            focusedField = nil
+        }
     }
 }

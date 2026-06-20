@@ -9,13 +9,128 @@
 import SwiftUI
 
 struct UserDetailView: View {
+    enum Field {
+        case name
+        case email
+    }
+
     let user: UserDTO
+    @FocusState private var focusedField: Field?
+    @StateObject private var viewModel: UserDetailViewModel
+
+    init(user: UserDTO) {
+        self.user = user
+        _viewModel = StateObject(wrappedValue: UserDetailViewModel(user: user))
+    }
 
     var body: some View {
-        Text(getTranslation(key: "User Detail"))
-            .navigationTitle(getTranslation(key: "User Detail"))
-            .onAppear {
-                print(":: UserDetailView user: \(user)")
+        Form {
+            Section {
+                HStack(spacing: 16) {
+                    Image("placeholder")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 84, height: 84)
+                        .clipShape(Circle())
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(user.username)
+                            .appTitleStyle()
+                        Text(user.phone)
+                            .appDetailStyle()
+                        Text(user.address.city)
+                            .appDetailStyle()
+                    }
+                }
+                .padding(.vertical, 8)
             }
+
+            Section(header: Text(getTranslation(key: "User Data"))) {
+                TextField(getTranslation(key: "Name"), text: $viewModel.name)
+                    .focused($focusedField, equals: .name)
+                    .textInputAutocapitalization(.words)
+                    .autocorrectionDisabled()
+                    .onChange(of: viewModel.name) { newValue in
+                        viewModel.name = String(newValue.prefix(ValidationRules.nameMaxLength))
+                    }
+
+                TextField(getTranslation(key: "Email"), text: $viewModel.email)
+                    .focused($focusedField, equals: .email)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .onChange(of: viewModel.email) { newValue in
+                        viewModel.email = String(newValue.prefix(ValidationRules.emailMaxLength))
+                    }
+            }
+
+            detailSection(titleKey: "Phone") {
+                detailValue(user.phone)
+            }
+
+            detailSection(titleKey: "Website") {
+                detailValue(user.website)
+            }
+
+            detailSection(titleKey: "Company") {
+                detailValue(user.company.name)
+                detailValue(user.company.catchPhrase)
+                detailValue(user.company.bs)
+            }
+
+            detailSection(titleKey: "Address") {
+                detailValue(user.address.street)
+                detailValue(user.address.suite)
+                detailValue(user.address.city)
+                detailValue(user.address.zipcode)
+            }
+
+            if let errorMessage = viewModel.errorMessage {
+                Section {
+                    Text(getTranslation(key: errorMessage))
+                        .foregroundColor(.red)
+                }
+            }
+
+            Section {
+                Button {
+                    Task {
+                        if await viewModel.saveChanges() {
+                            print(":: UserDetailView user updated: \(viewModel.email)")
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text(getTranslation(key: "Save"))
+                        Spacer()
+                    }
+                }
+                .disabled(viewModel.isSaving)
+            }
+        }
+        .navigationTitle(getTranslation(key: "User Detail"))
+        .onAppear {
+            print(":: UserDetailView user: \(user)")
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            guard focusedField != nil else { return }
+            focusedField = nil
+        }
+    }
+
+    @ViewBuilder
+    private func detailSection(titleKey: String, @ViewBuilder content: () -> some View) -> some View {
+        Section(header: Text(getTranslation(key: titleKey))) {
+            content()
+        }
+    }
+
+    @ViewBuilder
+    private func detailValue(_ value: String) -> some View {
+        if !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            Text(value)
+        }
     }
 }

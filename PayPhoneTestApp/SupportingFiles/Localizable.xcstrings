@@ -1,6 +1,57 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Address" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección"
+          }
+        }
+      }
+    },
+    "Company" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Company"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empresa"
+          }
+        }
+      }
+    },
+    "Duplicate Email" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email already exists"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El correo ya existe"
+          }
+        }
+      }
+    },
     "Email" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -223,6 +274,7 @@
       }
     },
     "User Create" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -256,6 +308,7 @@
       }
     },
     "User Detail" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -272,6 +325,7 @@
       }
     },
     "User List" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -283,6 +337,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lista de usuarios"
+          }
+        }
+      }
+    },
+    "User Not Found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User not found"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuario no encontrado"
+          }
+        }
+      }
+    },
+    "Website" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Website"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sitio web"
           }
         }
       }
