@@ -9,8 +9,13 @@
 import SwiftUI
 
 struct UserDetailView: View {
+    let user: UserDTO
+
     var body: some View {
         Text(getTranslation(key: "User Detail"))
             .navigationTitle(getTranslation(key: "User Detail"))
+            .onAppear {
+                print(":: UserDetailView user: \(user)")
+            }
     }
 }

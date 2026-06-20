@@ -23,26 +23,36 @@ struct UserListView: View {
                     .appDetailStyle()
             } else {
                 List(viewModel.users) { user in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(user.username)
-                            .appTitleStyle()
-                            .lineLimit(1)
-                            .truncationMode(.tail)
+                    NavigationLink(destination: UserDetailView(user: user)) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(user.username)
+                                .appTitleStyle()
+                                .lineLimit(1)
+                                .truncationMode(.tail)
 
-                        Text(user.name)
-                            .appSubtitleStyle()
-                            .lineLimit(1)
-                            .truncationMode(.tail)
+                            Text(user.name)
+                                .appSubtitleStyle()
+                                .lineLimit(1)
+                                .truncationMode(.tail)
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            infoRow(systemImage: "phone.fill", text: user.phone)
-                            infoRow(systemImage: "envelope.fill", text: user.email)
-                            infoRow(systemImage: "mappin.and.ellipse", text: user.address.city)
+                            VStack(alignment: .leading, spacing: 4) {
+                                infoRow(systemImage: "phone.fill", text: user.phone)
+                                infoRow(systemImage: "envelope.fill", text: user.email)
+                                infoRow(systemImage: "mappin.and.ellipse", text: user.address.city)
+                            }
                         }
+                        .padding(.vertical, 6)
                     }
-                    .padding(.vertical, 6)
                 }
                 .listStyle(.plain)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(destination: UserCreateView()) {
+                    Image(systemName: "plus")
+                }
+                .accessibilityLabel(getTranslation(key: "Add User"))
             }
         }
         .navigationTitle(getTranslation(key: "User List"))
