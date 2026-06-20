@@ -39,6 +39,11 @@ final class StorageService: StorageServicing {
     init() {}
 
     func saveNewUser(_ user: UserDTO) throws {
+        guard !DeletedUsersStore.contains(user.email) else {
+            print(":: StorageService Skipping deleted user: \(user.email)")
+            return
+        }
+
         let realm = try Realm()
         guard realm.objects(UserRecord.self).first(where: { $0.email == user.email }) == nil else {
             print(":: StorageService User already exists: \(user.email)")
@@ -56,7 +61,8 @@ final class StorageService: StorageServicing {
     func saveNewUsers(_ users: [UserDTO]) throws {
         let realm = try Realm()
         let existingEmails = Set(realm.objects(UserRecord.self).map(\.email))
-        let newUsers = users.filter { !existingEmails.contains($0.email) }
+        let deletedEmails = DeletedUsersStore.loadEmails()
+        let newUsers = users.filter { !existingEmails.contains($0.email) && !deletedEmails.contains($0.email) }
 
         guard !newUsers.isEmpty else {
             print(":: StorageService No new users to save")
@@ -83,6 +89,7 @@ final class StorageService: StorageServicing {
         }
 
         print(":: StorageService Deleted user: \(email)")
+        DeletedUsersStore.add(email)
         NotificationCenter.default.post(name: .userStorageDidChange, object: nil)
     }
 
@@ -122,6 +129,7 @@ final class StorageService: StorageServicing {
 
     func loadUsers() throws -> [UserDTO] {
         let realm = try Realm()
-        return realm.objects(UserRecord.self).map(\.dto)
+        let deletedEmails = DeletedUsersStore.loadEmails()
+        return realm.objects(UserRecord.self).map(\.dto).filter { !deletedEmails.contains($0.email) }
     }
 }
