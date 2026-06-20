@@ -16,18 +16,27 @@ final class UserListViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let networkService: NetworkService
+    private let storageService: StorageServicing
+    private var didLoadOnce = false
 
-    init(networkService: NetworkService? = nil) {
+    init(
+        networkService: NetworkService? = nil,
+        storageService: StorageServicing = StorageService.shared
+    ) {
         self.networkService = networkService ?? NetworkService.shared
+        self.storageService = storageService
     }
 
     func loadUsers() async {
-        guard !isLoading else { return }
+        guard !didLoadOnce else { return }
+        didLoadOnce = true
         isLoading = true
         errorMessage = nil
 
         do {
-            users = try await networkService.fetchUsers()
+            let remoteUsers = try await networkService.fetchUsers()
+            try storageService.saveNewUsers(remoteUsers)
+            users = remoteUsers
         } catch {
             errorMessage = error.localizedDescription
             print(":: UserListViewModel Error: \(error.localizedDescription)")
