@@ -58,11 +58,31 @@ final class UserCreateViewModel: ObservableObject {
     }
 
     private func validateForm() -> String? {
-        if let error = ValidationRules.name(name) {
+        if let error = ValidationRules.required(name) {
+            return error
+        }
+
+        if let error = ValidationRules.maxLength(name, limit: ValidationRules.nameMaxLength, messageKey: "Name Too Long") {
+            return error
+        }
+
+        if let error = ValidationRules.required(email) {
+            return error
+        }
+
+        if let error = ValidationRules.maxLength(email, limit: ValidationRules.emailMaxLength, messageKey: "Email Too Long") {
             return error
         }
 
         if let error = ValidationRules.email(email) {
+            return error
+        }
+
+        if let error = ValidationRules.required(phone) {
+            return error
+        }
+
+        if let error = ValidationRules.maxLength(phone, limit: ValidationRules.phoneMaxLength, messageKey: "Phone Too Long") {
             return error
         }
 

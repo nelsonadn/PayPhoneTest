@@ -17,13 +17,9 @@ enum ValidationRules {
         value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "Field Required" : nil
     }
 
-    static func name(_ value: String) -> String? {
+    static func maxLength(_ value: String, limit: Int, messageKey: String) -> String? {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            return "Field Required"
-        }
-
-        return trimmed.count <= nameMaxLength ? nil : "Name Too Long"
+        return trimmed.count <= limit ? nil : messageKey
     }
 
     static func email(_ value: String) -> String? {
@@ -31,14 +27,7 @@ enum ValidationRules {
         guard !trimmed.isEmpty else {
             return "Field Required"
         }
-
-        guard trimmed.count <= emailMaxLength else {
-            return "Email Too Long"
-        }
-
-        let pattern = #"^[A-Z0-9a-z._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"#
-        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
-        return predicate.evaluate(with: trimmed) ? nil : "Invalid Email"
+        return isValidEmail(trimmed) ? nil : "Invalid Email"
     }
 
     static func phone(_ value: String) -> String? {
@@ -47,11 +36,12 @@ enum ValidationRules {
             return "Field Required"
         }
 
-        guard trimmed.count <= phoneMaxLength else {
-            return "Phone Too Long"
-        }
-
         let allowed = CharacterSet.decimalDigits.union(CharacterSet(charactersIn: "+-() "))
         return trimmed.unicodeScalars.allSatisfy { allowed.contains($0) } ? nil : "Invalid Phone"
+    }
+
+    private static func isValidEmail(_ value: String) -> Bool {
+        let pattern = #"^[A-Z0-9a-z._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"#
+        return NSPredicate(format: "SELF MATCHES %@", pattern).evaluate(with: value)
     }
 }
