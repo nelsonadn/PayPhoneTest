@@ -38,14 +38,19 @@ protocol StorageServicing {
 final class StorageService: StorageServicing {
     init() {}
 
+    private func normalizedEmail(_ email: String) -> String {
+        email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
+
     func saveNewUser(_ user: UserDTO) throws {
-        guard !DeletedUsersStore.contains(user.email) else {
+        let email = normalizedEmail(user.email)
+        guard !DeletedUsersStore.contains(email) else {
             print(":: StorageService Skipping deleted user: \(user.email)")
             return
         }
 
         let realm = try Realm()
-        guard realm.objects(UserRecord.self).first(where: { $0.email == user.email }) == nil else {
+        guard realm.objects(UserRecord.self).first(where: { normalizedEmail($0.email) == email }) == nil else {
             print(":: StorageService User already exists: \(user.email)")
             return
         }
@@ -60,9 +65,12 @@ final class StorageService: StorageServicing {
 
     func saveNewUsers(_ users: [UserDTO]) throws {
         let realm = try Realm()
-        let existingEmails = Set(realm.objects(UserRecord.self).map(\.email))
+        let existingEmails = Set(realm.objects(UserRecord.self).map { normalizedEmail($0.email) })
         let deletedEmails = DeletedUsersStore.loadEmails()
-        let newUsers = users.filter { !existingEmails.contains($0.email) && !deletedEmails.contains($0.email) }
+        let newUsers = users.filter {
+            let email = normalizedEmail($0.email)
+            return !existingEmails.contains(email) && !deletedEmails.contains(email)
+        }
 
         guard !newUsers.isEmpty else {
             print(":: StorageService No new users to save")
@@ -79,7 +87,8 @@ final class StorageService: StorageServicing {
 
     func deleteUser(email: String) throws {
         let realm = try Realm()
-        guard let record = realm.objects(UserRecord.self).first(where: { $0.email == email }) else {
+        let normalized = normalizedEmail(email)
+        guard let record = realm.objects(UserRecord.self).first(where: { normalizedEmail($0.email) == normalized }) else {
             print(":: StorageService User not found for delete: \(email)")
             return
         }
@@ -89,18 +98,20 @@ final class StorageService: StorageServicing {
         }
 
         print(":: StorageService Deleted user: \(email)")
-        DeletedUsersStore.add(email)
+        DeletedUsersStore.add(normalized)
         NotificationCenter.default.post(name: .userStorageDidChange, object: nil)
     }
 
     func updateUser(originalEmail: String, user: UserDTO) throws {
         let realm = try Realm()
-        guard let record = realm.objects(UserRecord.self).first(where: { $0.email == originalEmail }) else {
+        let normalizedOriginal = normalizedEmail(originalEmail)
+        let normalizedNew = normalizedEmail(user.email)
+        guard let record = realm.objects(UserRecord.self).first(where: { normalizedEmail($0.email) == normalizedOriginal }) else {
             print(":: StorageService User not found for update: \(originalEmail)")
             throw StorageError.userNotFound
         }
 
-        let emailExists = realm.objects(UserRecord.self).first(where: { $0.email == user.email && $0.email != originalEmail }) != nil
+        let emailExists = realm.objects(UserRecord.self).first(where: { normalizedEmail($0.email) == normalizedNew && normalizedEmail($0.email) != normalizedOriginal }) != nil
         guard !emailExists else {
             print(":: StorageService Email already exists: \(user.email)")
             throw StorageError.duplicateEmail
@@ -130,6 +141,6 @@ final class StorageService: StorageServicing {
     func loadUsers() throws -> [UserDTO] {
         let realm = try Realm()
         let deletedEmails = DeletedUsersStore.loadEmails()
-        return realm.objects(UserRecord.self).map(\.dto).filter { !deletedEmails.contains($0.email) }
+        return realm.objects(UserRecord.self).map(\.dto).filter { !deletedEmails.contains(normalizedEmail($0.email)) }
     }
 }
