@@ -17,6 +17,8 @@ struct UserDetailView: View {
     let user: UserDTO
     @FocusState private var focusedField: Field?
     @StateObject private var viewModel: UserDetailViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var showDeleteAlert = false
 
     init(user: UserDTO) {
         self.user = user
@@ -92,7 +94,16 @@ struct UserDetailView: View {
                 }
             }
 
-            Section {
+            HStack(spacing: 12) {
+                Button(role: .destructive) {
+                    showDeleteAlert = true
+                } label: {
+                    Text(getTranslation(key: "Delete User"))
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .disabled(viewModel.isSaving || viewModel.isDeleting)
+
                 Button {
                     Task {
                         if await viewModel.saveChanges() {
@@ -100,16 +111,29 @@ struct UserDetailView: View {
                         }
                     }
                 } label: {
-                    HStack {
-                        Spacer()
-                        Text(getTranslation(key: "Save"))
-                        Spacer()
-                    }
+                    Text(getTranslation(key: "Save"))
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(viewModel.isSaving)
             }
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
         }
         .navigationTitle(getTranslation(key: "User Detail"))
+        .alert(getTranslation(key: "Delete User"), isPresented: $showDeleteAlert) {
+            Button(getTranslation(key: "Cancel"), role: .cancel) {}
+            Button(getTranslation(key: "Delete"), role: .destructive) {
+                Task {
+                    if await viewModel.deleteUser() {
+                        dismiss()
+                    }
+                }
+            }
+        } message: {
+            Text(getTranslation(key: "Delete Confirmation"))
+        }
         .onAppear {
             print(":: UserDetailView user: \(user)")
         }

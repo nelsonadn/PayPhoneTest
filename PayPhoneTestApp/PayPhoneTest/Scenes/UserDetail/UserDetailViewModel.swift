@@ -15,6 +15,7 @@ final class UserDetailViewModel: ObservableObject {
     @Published var email: String
     @Published var errorMessage: String?
     @Published var isSaving = false
+    @Published var isDeleting = false
 
     let user: UserDTO
     private let storageService: StorageServicing
@@ -50,6 +51,20 @@ final class UserDetailViewModel: ObservableObject {
         } catch {
             errorMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
             print(":: UserDetailViewModel Error: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    func deleteUser() async -> Bool {
+        isDeleting = true
+        defer { isDeleting = false }
+
+        do {
+            try storageService.deleteUser(email: user.email)
+            return true
+        } catch {
+            errorMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+            print(":: UserDetailViewModel Delete Error: \(error.localizedDescription)")
             return false
         }
     }
