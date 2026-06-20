@@ -5,9 +5,10 @@ Prueba técnica Payphone que consiste en una Aplicación de iOS en SwiftUI con A
 Estructura principal:
 
 - `App`: punto de entrada y coordinador global
+- `Common`: reutilizables
 - `Core`: servicios de red y almacenamiento
-- `Models`: modelos de datos
-- `Scenes`: pantallas y view models
+- `Models`: modelos de datos (User)
+- `Scenes`: pantallas y view models (Create, Detail, List)
 
 Deployment target:
 
