@@ -6,30 +6,96 @@
 //
 
 import XCTest
+@testable import PayPhoneTest
 
 final class PayPhoneTestTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testValidationRules_requiredRejectsEmptyValue() {
+        XCTAssertEqual(ValidationRules.required(""), "Field Required")
+        XCTAssertEqual(ValidationRules.required("   "), "Field Required")
+        XCTAssertNil(ValidationRules.required("Nelson"))
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testValidationRules_emailValidatesFormat() {
+        XCTAssertNil(ValidationRules.email("test@example.com"))
+        XCTAssertEqual(ValidationRules.email("invalid-email"), "Invalid Email")
+        XCTAssertEqual(ValidationRules.email(""), "Field Required")
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testValidationRules_maxLengthRejectsLongValues() {
+        XCTAssertEqual(ValidationRules.maxLength(String(repeating: "a", count: 51), limit: ValidationRules.nameMaxLength, messageKey: "Name Too Long"), "Name Too Long")
+        XCTAssertNil(ValidationRules.maxLength("Name", limit: ValidationRules.nameMaxLength, messageKey: "Name Too Long"))
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testUserDetailViewModel_saveChangesCallsUpdate() async {
+        let user = makeUser(email: "original@example.com")
+        let storage = StorageServiceSpy()
+        let viewModel = UserDetailViewModel(user: user, storageService: storage)
+        viewModel.name = "Updated Name"
+        viewModel.email = "updated@example.com"
+
+        let result = await viewModel.saveChanges()
+
+        XCTAssertTrue(result)
+        XCTAssertEqual(storage.updatedUser?.email, "updated@example.com")
+        XCTAssertEqual(storage.updatedUser?.name, "Updated Name")
+        XCTAssertEqual(storage.originalEmail, "original@example.com")
     }
 
+    func testUserDetailViewModel_deleteCallsDelete() async {
+        let user = makeUser(email: "delete@example.com")
+        let storage = StorageServiceSpy()
+        let viewModel = UserDetailViewModel(user: user, storageService: storage)
+
+        let result = await viewModel.deleteUser()
+
+        XCTAssertTrue(result)
+        XCTAssertEqual(storage.deletedEmail, "delete@example.com")
+    }
+
+    private func makeUser(email: String) -> UserDTO {
+        UserDTO(
+            id: 1,
+            name: "Nelson Cruz Mora",
+            username: "nelson",
+            email: email,
+            address: AddressDTO(
+                street: "Street",
+                suite: "Suite",
+                city: "Quito",
+                zipcode: "170150",
+                geo: GeoDTO(lat: "-0.180653", lng: "-78.467838")
+            ),
+            phone: "0999999999",
+            website: "example.com",
+            company: CompanyDTO(name: "Company", catchPhrase: "Catch", bs: "BS")
+        )
+    }
+}
+
+final class StorageServiceSpy: StorageServicing {
+    private(set) var savedUsers: [UserDTO] = []
+    private(set) var deletedEmail: String?
+    private(set) var originalEmail: String?
+    private(set) var updatedUser: UserDTO?
+
+    func saveNewUser(_ user: UserDTO) throws {
+        savedUsers.append(user)
+    }
+
+    func saveNewUsers(_ users: [UserDTO]) throws {
+        savedUsers.append(contentsOf: users)
+    }
+
+    func deleteUser(email: String) throws {
+        deletedEmail = email
+    }
+
+    func updateUser(originalEmail: String, user: UserDTO) throws {
+        self.originalEmail = originalEmail
+        updatedUser = user
+    }
+
+    func loadUsers() throws -> [UserDTO] {
+        savedUsers
+    }
 }
