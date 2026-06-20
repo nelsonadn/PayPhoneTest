@@ -8,24 +8,24 @@
 
 import Foundation
 
+private func normalizedDeletedEmail(_ email: String) -> String {
+    email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+}
+
 enum DeletedUsersStore {
     private static let key = "deleted_user_emails"
 
-    private static func normalized(_ email: String) -> String {
-        email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-    }
-
     static func loadEmails() -> Set<String> {
-        Set((UserDefaults.standard.stringArray(forKey: key) ?? []).map(normalized))
+        Set((UserDefaults.standard.stringArray(forKey: key) ?? []).map(normalizedDeletedEmail))
     }
 
     static func contains(_ email: String) -> Bool {
-        loadEmails().contains(normalized(email))
+        loadEmails().contains(normalizedDeletedEmail(email))
     }
 
     static func add(_ email: String) {
         var emails = loadEmails()
-        guard emails.insert(normalized(email)).inserted else { return }
+        guard emails.insert(normalizedDeletedEmail(email)).inserted else { return }
         UserDefaults.standard.set(Array(emails), forKey: key)
     }
 }
