@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4BBDBBF92FE717620097552C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4BBDBBF82FE717620097552C /* RealmSwift */; };
+		4BBDBDEB2FE71B320097552C /* (null) in CopyFiles */ = {isa = PBXBuildFile; };
+		4BBDBE1C2FE71B560097552C /* Realm in CopyFiles */ = {isa = PBXBuildFile; productRef = 4BBDBE1A2FE71B560097552C /* Realm */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		4BBDBE1F2FE71BBF0097552C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 4BBDBE1E2FE71BBF0097552C /* Realm */; };
+		4BBDBE222FE71BF50097552C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4BBDBE212FE71BF50097552C /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +29,20 @@
 			remoteInfo = PayPhoneTest;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4BBDBBFA2FE71A000097552C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4BBDBE1C2FE71B560097552C /* Realm in CopyFiles */,
+				4BBDBDEB2FE71B320097552C /* (null) in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4BBDBBC02FE715810097552C /* PayPhoneTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayPhoneTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +66,16 @@
 			path = PayPhoneTestUITests;
 			sourceTree = "<group>";
 		};
+		4BBDBE232FE71C140097552C /* SupportingFiles */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		4BBDBE242FE71C230097552C /* Assets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Assets;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BBDBBF92FE717620097552C /* RealmSwift in Frameworks */,
+				4BBDBE1F2FE71BBF0097552C /* Realm in Frameworks */,
+				4BBDBE222FE71BF50097552C /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,9 +108,12 @@
 		4BBDBBB72FE715810097552C = {
 			isa = PBXGroup;
 			children = (
+				4BBDBE242FE71C230097552C /* Assets */,
+				4BBDBE232FE71C140097552C /* SupportingFiles */,
 				4BBDBBC22FE715810097552C /* PayPhoneTest */,
 				4BBDBBD02FE715840097552C /* PayPhoneTestTests */,
 				4BBDBBDA2FE715840097552C /* PayPhoneTestUITests */,
+				4BBDBE172FE71B560097552C /* Frameworks */,
 				4BBDBBC12FE715810097552C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,6 +128,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4BBDBE172FE71B560097552C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -106,6 +144,7 @@
 			buildPhases = (
 				4BBDBBBC2FE715810097552C /* Sources */,
 				4BBDBBBD2FE715810097552C /* Frameworks */,
+				4BBDBBFA2FE71A000097552C /* CopyFiles */,
 				4BBDBBBE2FE715810097552C /* Resources */,
 			);
 			buildRules = (
@@ -114,10 +153,13 @@
 			);
 			fileSystemSynchronizedGroups = (
 				4BBDBBC22FE715810097552C /* PayPhoneTest */,
+				4BBDBE232FE71C140097552C /* SupportingFiles */,
+				4BBDBE242FE71C230097552C /* Assets */,
 			);
 			name = PayPhoneTest;
 			packageProductDependencies = (
-				4BBDBBF82FE717620097552C /* RealmSwift */,
+				4BBDBE1E2FE71BBF0097552C /* Realm */,
+				4BBDBE212FE71BF50097552C /* Alamofire */,
 			);
 			productName = PayPhoneTest;
 			productReference = 4BBDBBC02FE715810097552C /* PayPhoneTest.app */;
@@ -198,12 +240,13 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = 4BBDBBB72FE715810097552C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				4BBDBBF62FE7169E0097552C /* XCRemoteSwiftPackageReference "AlamofireImage" */,
-				4BBDBBF72FE717620097552C /* XCRemoteSwiftPackageReference "realm-swift" */,
+				4BBDBE1D2FE71BBF0097552C /* XCRemoteSwiftPackageReference "realm-swift" */,
+				4BBDBE202FE71BF50097552C /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4BBDBBC12FE715810097552C /* Products */;
@@ -337,6 +380,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -392,6 +436,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
@@ -633,14 +678,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4BBDBBF62FE7169E0097552C /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.4.0;
-			};
-		};
 		4BBDBBF72FE717620097552C /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift";
@@ -649,13 +686,39 @@
 				kind = branch;
 			};
 		};
+		4BBDBE1D2FE71BBF0097552C /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				branch = community;
+				kind = branch;
+			};
+		};
+		4BBDBE202FE71BF50097552C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.12.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4BBDBBF82FE717620097552C /* RealmSwift */ = {
+		4BBDBE1A2FE71B560097552C /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4BBDBBF72FE717620097552C /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
+			productName = Realm;
+		};
+		4BBDBE1E2FE71BBF0097552C /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4BBDBE1D2FE71BBF0097552C /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		4BBDBE212FE71BF50097552C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4BBDBE202FE71BF50097552C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
