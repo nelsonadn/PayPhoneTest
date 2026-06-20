@@ -9,6 +9,20 @@
 import Foundation
 import RealmSwift
 
+enum StorageError: LocalizedError {
+    case userNotFound
+    case duplicateEmail
+
+    var errorDescription: String? {
+        switch self {
+        case .userNotFound:
+            return "User Not Found"
+        case .duplicateEmail:
+            return "Duplicate Email"
+        }
+    }
+}
+
 extension Notification.Name {
     static let userStorageDidChange = Notification.Name("userStorageDidChange")
 }
@@ -17,6 +31,7 @@ protocol StorageServicing {
     func saveNewUser(_ user: UserDTO) throws
     func saveNewUsers(_ users: [UserDTO]) throws
     func deleteUser(email: String) throws
+    func updateUser(originalEmail: String, user: UserDTO) throws
     func loadUsers() throws -> [UserDTO]
 }
 
@@ -68,6 +83,40 @@ final class StorageService: StorageServicing {
         }
 
         print(":: StorageService Deleted user: \(email)")
+        NotificationCenter.default.post(name: .userStorageDidChange, object: nil)
+    }
+
+    func updateUser(originalEmail: String, user: UserDTO) throws {
+        let realm = try Realm()
+        guard let record = realm.objects(UserRecord.self).first(where: { $0.email == originalEmail }) else {
+            print(":: StorageService User not found for update: \(originalEmail)")
+            throw StorageError.userNotFound
+        }
+
+        let emailExists = realm.objects(UserRecord.self).first(where: { $0.email == user.email && $0.email != originalEmail }) != nil
+        guard !emailExists else {
+            print(":: StorageService Email already exists: \(user.email)")
+            throw StorageError.duplicateEmail
+        }
+
+        try realm.write {
+            record.name = user.name
+            record.username = user.username
+            record.email = user.email
+            record.phone = user.phone
+            record.website = user.website
+            record.street = user.address.street
+            record.suite = user.address.suite
+            record.city = user.address.city
+            record.zipcode = user.address.zipcode
+            record.geoLat = user.address.geo.lat
+            record.geoLng = user.address.geo.lng
+            record.companyName = user.company.name
+            record.companyCatchPhrase = user.company.catchPhrase
+            record.companyBs = user.company.bs
+        }
+
+        print(":: StorageService Updated user: \(originalEmail)")
         NotificationCenter.default.post(name: .userStorageDidChange, object: nil)
     }
 
