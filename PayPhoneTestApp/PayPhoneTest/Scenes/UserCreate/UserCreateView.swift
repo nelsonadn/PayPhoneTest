@@ -52,17 +52,21 @@ struct UserCreateView: View {
                     }
 
                 HStack(spacing: 12) {
-                    TextField(getTranslation(key: "Latitude"), text: $viewModel.latitude)
-                        .keyboardType(.decimalPad)
-                        .onChange(of: viewModel.latitude) { newValue in
-                            viewModel.latitude = String(newValue.prefix(20))
-                        }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(getTranslation(key: "Latitude"))
+                            .foregroundColor(.secondary)
+                            .appCaptionStyle()
+                        Text(viewModel.latitude.isEmpty ? "-" : viewModel.latitude)
+                            .appDetailStyle()
+                    }
 
-                    TextField(getTranslation(key: "Longitude"), text: $viewModel.longitude)
-                        .keyboardType(.decimalPad)
-                        .onChange(of: viewModel.longitude) { newValue in
-                            viewModel.longitude = String(newValue.prefix(20))
-                        }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(getTranslation(key: "Longitude"))
+                            .foregroundColor(.secondary)
+                            .appCaptionStyle()
+                        Text(viewModel.longitude.isEmpty ? "-" : viewModel.longitude)
+                            .appDetailStyle()
+                    }
                 }
             }
 

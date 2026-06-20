@@ -33,7 +33,7 @@ final class LocationService: NSObject, CLLocationManagerDelegate, ObservableObje
         let status = manager.authorizationStatus
         switch status {
         case .notDetermined:
-            DispatchQueue.main.async { [manager] in
+            Task { @MainActor [manager] in
                 manager.requestWhenInUseAuthorization()
             }
         case .restricted, .denied:
@@ -47,19 +47,6 @@ final class LocationService: NSObject, CLLocationManagerDelegate, ObservableObje
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
-        switch status {
-        case .authorizedWhenInUse, .authorizedAlways:
-            manager.requestLocation()
-        case .restricted, .denied:
-            alertMessage = "Location Permission Denied"
-        case .notDetermined:
-            break
-        @unknown default:
-            alertMessage = "Location Permission Denied"
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             manager.requestLocation()

@@ -177,13 +177,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This field is required"
+            "value" : "Fill all fields in order to save"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este campo es obligatorio"
+            "value" : "Rellene todos los campos."
           }
         }
       }
