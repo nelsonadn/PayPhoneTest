@@ -307,6 +307,23 @@
         }
       }
     },
+    "Location Services Disabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location services are disabled."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los servicios de ubicación están desactivados."
+          }
+        }
+      }
+    },
     "Location Permission Denied" : {
       "extractionState" : "manual",
       "localizations" : {
